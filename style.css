@@ -1,15 +1,18 @@
 header {
   margin: 0 auto;
-  height: 10%;
+  height: 15%;
   width: 100%;  
   text-align: center;
   background-color: #999966;
-  /* border: 1px solid red; */
 }
 
 html, body, #viewDiv {
     padding: 0;
     margin: 0;
-    height: 100%;
+    height: 95%;
     width: 100%;
   }
+
+p{
+  margin-bottom: 0;
+}

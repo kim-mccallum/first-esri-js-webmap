@@ -1,5 +1,5 @@
 // Why is everything happening in this require function?
-require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer","esri/widgets/Legend"], function(Map, MapView,FeatureLayer,Legend) {
+require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer","esri/widgets/Legend","esri/widgets/Locate"], function(Map, MapView,FeatureLayer,Legend,Locate) {
 
     const myMap = new Map({
       basemap: "topo-vector"
@@ -97,59 +97,59 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer","esri/widg
     myMap.add(fire,0);
   
     // Define popup for Parks and Open Spaces
-    const popupOpenspaces = {
-      "title": "{PARK_NAME}",
-      "content": [{
-        "type": "fields",
-        "fieldInfos": [
-          {
-            "fieldName": "TYPE",
-            "label": "Type",
-            "isEditable": true,
-            "tooltip": "",
-            "visible": true,
-            "format": null,
-            "stringFieldOption": "text-box"
-          },
-          {
-            "fieldName": "ACCESS_TYP",
-            "label": "Access",
-            "isEditable": true,
-            "tooltip": "",
-            "visible": true,
-            "format": null,
-            "stringFieldOption": "text-box"
-          },
-        ]
-      }]
-    }
+    // const popupOpenspaces = {
+    //   "title": "{PARK_NAME}",
+    //   "content": [{
+    //     "type": "fields",
+    //     "fieldInfos": [
+    //       {
+    //         "fieldName": "TYPE",
+    //         "label": "Type",
+    //         "isEditable": true,
+    //         "tooltip": "",
+    //         "visible": true,
+    //         "format": null,
+    //         "stringFieldOption": "text-box"
+    //       },
+    //       {
+    //         "fieldName": "ACCESS_TYP",
+    //         "label": "Access",
+    //         "isEditable": true,
+    //         "tooltip": "",
+    //         "visible": true,
+    //         "format": null,
+    //         "stringFieldOption": "text-box"
+    //       },
+    //     ]
+    //   }]
+    // }
   
     const openspaces = new FeatureLayer({
       url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Parks_and_Open_Space_Styled/FeatureServer/0",
       outFields: ["TYPE","PARK_NAME", "AGNCY_NAME","ACCESS_TYP","GIS_ACRES","TRLS_MI","TOTAL_GOOD","TOTAL_FAIR", "TOTAL_POOR"],
-      popupTemplate: popupOpenspaces
+      // popupTemplate: popupOpenspaces
     });
   
     // Add the layer
     myMap.add(openspaces,0);
 
     // Add a legend with fire and trails
-    view.ui.add(
-      new Legend({
-        view: view,
-        layerInfos: [
-          {
-            layer: fire,
-            title: "Woolsey Fire Perimeter (2018)"
-          }, 
-          {
-            layer: trails,
-            title: "Backbone Trail"
-          }
-        ]
-      }),
-      "bottom-left"
-    );
+    // view.ui.add(
+    //   new Legend({
+    //     view: view,
+    //     layerInfos: [
+    //       {
+    //         layer: fire,
+    //         title: "Woolsey Fire Perimeter (2018)"
+    //       }, 
+    //       {
+    //         layer: trails,
+    //         title: "Backbone Trail"
+    //       }
+    //     ]
+    //   }),
+    //   "bottom-left"
+    // );
 
     // Add coordinates to the map
     var coordsWidget = document.createElement("div");
@@ -172,6 +172,15 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer","esri/widg
 
     view.on("pointer-move", function(evt) {
       showCoordinates(view.toMap({ x: evt.x, y: evt.y }));
+    });
+
+    const locateBtn = new Locate({
+      view: view
+    });
+
+    // Add the locate widget to the top left corner of the view
+    view.ui.add(locateBtn, {
+      position: "top-left"
     });
   
 
