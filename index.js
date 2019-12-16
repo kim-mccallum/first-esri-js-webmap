@@ -40,12 +40,22 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer","esri/widg
          return "This is {TRL_NAME}, it is {LENGTH_MI} miles long with {ELEV_GAIN} ft of climbing."; 
       }
     }
+
+    const trailRenderer = {
+      type: "simple", 
+      symbol: {
+        type: "simple-line", 
+        color: "#e600e6",
+        width: 3
+      }
+    };
         
     // Create the layer and set the renderer
     const trails = new FeatureLayer({
       url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trails_Styled/FeatureServer/0",
       outFields: ["TRL_NAME","ELEV_GAIN","LENGTH_MI"],
-      popupTemplate: popupTrails
+      popupTemplate: popupTrails,
+      renderer: trailRenderer
     });
 
 
@@ -122,6 +132,24 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer","esri/widg
   
     // Add the layer
     myMap.add(openspaces,0);
+
+    // Add a legend with fire and trails
+    view.ui.add(
+      new Legend({
+        view: view,
+        layerInfos: [
+          {
+            layer: fire,
+            title: "Woolsey Fire Perimeter (2018)"
+          }, 
+          {
+            layer: trails,
+            title: "Backbone Trail"
+          }
+        ]
+      }),
+      "bottom-left"
+    );
 
     // Add coordinates to the map
     var coordsWidget = document.createElement("div");
