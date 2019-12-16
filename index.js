@@ -1,9 +1,9 @@
 // Why is everything happening in this require function?
-require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer","esri/widgets/Legend","esri/widgets/Locate"], function(Map, MapView,FeatureLayer,Legend,Locate) {
+require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer","esri/widgets/Locate"], function(Map, MapView,FeatureLayer,Locate) {
 
     const myMap = new Map({
-      basemap: "topo-vector"
-      // basemap: "satellite"
+      // basemap: "topo-vector"
+      basemap: "satellite"
     });
 
     const view = new MapView({
@@ -27,7 +27,6 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer","esri/widg
     });
         
     // Get the trailheads we are interested in
-    //trailheads.definitionExpression = "TRL_NAME LIKE '%Backbone%'"// Trail - Inspiration Point Loop'"
     trailheads.definitionExpression = "TRL_NAME = 'Backbone Trail'"
     // Add the layer
     myMap.add(trailheads);
@@ -95,35 +94,7 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer","esri/widg
     });
 
     myMap.add(fire,0);
-  
-    // Define popup for Parks and Open Spaces
-    // const popupOpenspaces = {
-    //   "title": "{PARK_NAME}",
-    //   "content": [{
-    //     "type": "fields",
-    //     "fieldInfos": [
-    //       {
-    //         "fieldName": "TYPE",
-    //         "label": "Type",
-    //         "isEditable": true,
-    //         "tooltip": "",
-    //         "visible": true,
-    //         "format": null,
-    //         "stringFieldOption": "text-box"
-    //       },
-    //       {
-    //         "fieldName": "ACCESS_TYP",
-    //         "label": "Access",
-    //         "isEditable": true,
-    //         "tooltip": "",
-    //         "visible": true,
-    //         "format": null,
-    //         "stringFieldOption": "text-box"
-    //       },
-    //     ]
-    //   }]
-    // }
-  
+   
     const openspaces = new FeatureLayer({
       url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Parks_and_Open_Space_Styled/FeatureServer/0",
       outFields: ["TYPE","PARK_NAME", "AGNCY_NAME","ACCESS_TYP","GIS_ACRES","TRLS_MI","TOTAL_GOOD","TOTAL_FAIR", "TOTAL_POOR"],
@@ -132,24 +103,6 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer","esri/widg
   
     // Add the layer
     myMap.add(openspaces,0);
-
-    // Add a legend with fire and trails
-    // view.ui.add(
-    //   new Legend({
-    //     view: view,
-    //     layerInfos: [
-    //       {
-    //         layer: fire,
-    //         title: "Woolsey Fire Perimeter (2018)"
-    //       }, 
-    //       {
-    //         layer: trails,
-    //         title: "Backbone Trail"
-    //       }
-    //     ]
-    //   }),
-    //   "bottom-left"
-    // );
 
     // Add coordinates to the map
     var coordsWidget = document.createElement("div");
